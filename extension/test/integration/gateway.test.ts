@@ -26,24 +26,32 @@ describeIf("真实网关集成冒烟", () => {
     { timeout: 120_000 },
     async () => {
       if (!BASE_URL || !API_KEY) {
-        throw new Error("EDA_IT_GATEWAY=1 时必须设置 EDA_IT_BASE_URL 与 EDA_IT_API_KEY");
+        throw new Error(
+          "EDA_IT_GATEWAY=1 时必须设置 EDA_IT_BASE_URL 与 EDA_IT_API_KEY",
+        );
       }
-      const client = new OpenAiLlmClient({ baseUrl: BASE_URL, apiKey: API_KEY, model: MODEL });
+      const client = new OpenAiLlmClient({
+        baseUrl: BASE_URL,
+        apiKey: API_KEY,
+        model: MODEL,
+      });
       const registry = new ToolRegistry();
       registry.register(nowTool);
       const agent = new Agent({ client, registry, maxToolRounds: 10 });
 
       // 第一轮：驱动 tool call → 执行 → 最终回复（流式增量非空）
       const deltas: string[] = [];
-      const first = await agent.send("调用 get_now 工具，把工具返回的时间告诉我", (d) =>
-        deltas.push(d),
+      const first = await agent.send(
+        "调用 get_now 工具，把工具返回的时间告诉我",
+        (d) => deltas.push(d),
       );
       expect(first).toBeTruthy();
       expect(deltas.length).toBeGreaterThan(0);
 
       // 第二轮：验证上下文连续（记得上一轮调用的工具）
-      const second = await agent.send("我刚才让你调用的工具叫什么名字？只回答名字。", () =>
-        undefined,
+      const second = await agent.send(
+        "我刚才让你调用的工具叫什么名字？只回答名字。",
+        () => undefined,
       );
       expect(second).toContain("get_now");
     },
