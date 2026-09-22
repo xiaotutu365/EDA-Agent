@@ -78,7 +78,7 @@
 
 ## Phase 4: 集成与收尾
 
-- [ ] Task 9: 真实网关集成冒烟
+- [x] Task 9: 真实网关集成冒烟
   - Acceptance: 环境变量开关默认跳过；开启后经真实网关完成带 demo tool 的多轮对话
   - Verify: `npm test -- integration`（设置 `EDA_IT_GATEWAY=1` 及网关变量后运行）
   - Files: `test/integration/gateway.test.ts`
