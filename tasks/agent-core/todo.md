@@ -4,7 +4,7 @@
 
 ## Phase 1: 工程基础
 
-- [ ] Task 1: 扩展工程骨架
+- [x] Task 1: 扩展工程骨架
   - Acceptance: `npm run compile` / `npm test` / `npm run lint` 可用；F5 后扩展激活无报错；`engines.vscode: ^1.90.0` 且 `@types/vscode` 锁 1.90.x
   - Verify: `npm test && npm run compile`；手动 F5 激活
   - Files: `extension/package.json`、`tsconfig.json`、`esbuild.js`、`src/extension.ts`、`test/unit/smoke.test.ts`
