@@ -24,7 +24,7 @@
 
 ## Phase 2: Agent 核心
 
-- [ ] Task 3: 核心类型与 ToolRegistry
+- [x] Task 3: 核心类型与 ToolRegistry
   - Acceptance: `AgentTool` / `Message` / `ToolCall` 类型定义；重复注册抛错
   - Verify: `npm test -- toolRegistry`
   - Files: `src/agent/types.ts`、`src/agent/toolRegistry.ts`、`test/unit/agent/toolRegistry.test.ts`
