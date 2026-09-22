@@ -45,7 +45,7 @@
   - Dependencies: Task 4
   - Size: M
 
-- [ ] Task 6: Agent 循环——多工具 / 异常 / 超限
+- [x] Task 6: Agent 循环——多工具 / 异常 / 超限
   - Acceptance: 同轮多 tool call 正确处理；工具异常作为结果回填不中断；超 `maxToolRounds` 终止并明示原因
   - Verify: `npm test -- core`
   - Files: `src/agent/core.ts`、`test/unit/agent/core.test.ts`
