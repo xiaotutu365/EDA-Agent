@@ -172,6 +172,67 @@ describe("OpenAiLlmClient", () => {
     expect(req).toMatchObject({ model: "deepseek-4", stream: true });
   });
 
+  it("chat：arguments 非法 JSON 或非对象时抛错", async () => {
+    for (const bad of ["{bad", '"just-a-string"', "[1,2]"]) {
+      mocks.create.mockResolvedValue({
+        choices: [
+          {
+            message: {
+              role: "assistant",
+              content: null,
+              tool_calls: [
+                {
+                  id: "call_bad",
+                  type: "function",
+                  function: { name: "x", arguments: bad },
+                },
+              ],
+            },
+          },
+        ],
+      });
+      const client = new OpenAiLlmClient(cfg);
+
+      await expect(
+        client.chat({ messages: [{ role: "user", content: "hi" }] }),
+      ).rejects.toThrow("不是合法 JSON");
+    }
+  });
+
+  it("chatStream：空 arguments 与无 delta 的 chunk 均安全处理", async () => {
+    mocks.create.mockResolvedValue(
+      (async function* () {
+        yield {};
+        yield { choices: [] };
+        yield {
+          choices: [
+            {
+              delta: {
+                tool_calls: [
+                  {
+                    index: 0,
+                    id: "call_e",
+                    type: "function",
+                    function: { name: "x", arguments: "" },
+                  },
+                ],
+              },
+            },
+          ],
+        };
+      })(),
+    );
+    const client = new OpenAiLlmClient(cfg);
+
+    const res = await client.chatStream(
+      { messages: [{ role: "user", content: "hi" }] },
+      () => undefined,
+    );
+
+    expect(res.content).toBe("");
+    expect(res.toolCalls).toEqual([{ id: "call_e", name: "x", args: {} }]);
+  });
+
   it("chatStream：tool calls 跨分片累积（id/name 首片，arguments 拼接）", async () => {
     mocks.create.mockResolvedValue(
       (async function* () {

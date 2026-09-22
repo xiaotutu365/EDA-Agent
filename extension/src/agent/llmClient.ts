@@ -143,7 +143,8 @@ export class OpenAiLlmClient implements LlmClient {
     // tool call 分片累积：id/name 在首个分片，arguments 跨分片拼接
     const acc = new Map<number, { id: string; name: string; args: string }>();
     for await (const chunk of stream) {
-      const delta = chunk.choices[0]?.delta;
+      // 网关可能发出无 choices 的 keep-alive/空 chunk，安全跳过
+      const delta = chunk.choices?.[0]?.delta;
       if (!delta) {
         continue;
       }

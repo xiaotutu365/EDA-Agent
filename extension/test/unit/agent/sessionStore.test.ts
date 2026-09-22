@@ -1,5 +1,10 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { getFileBytes, resetVscodeMocks, Uri } from "../mocks/vscode";
+import {
+  getFileBytes,
+  resetVscodeMocks,
+  Uri,
+  workspace,
+} from "../mocks/vscode";
 import { SessionStore } from "../../../src/agent/sessionStore";
 import type { Message } from "../../../src/agent/types";
 
@@ -71,5 +76,41 @@ describe("SessionStore", () => {
     const loaded = await store.load();
 
     expect(loaded).toEqual([]);
+  });
+
+  it("落盘文件损坏时 load 回退为空历史", async () => {
+    await store.save([{ role: "user", content: "hi" }]);
+
+    // 模拟外部写入破坏 JSON
+    await workspace.fs.writeFile(
+      Uri.file(sessionPath),
+      new TextEncoder().encode("{not-json"),
+    );
+
+    const loaded = await store.load();
+
+    expect(loaded).toEqual([]);
+  });
+
+  it("load 跳过格式异常的条目（角色未知/缺 content）", async () => {
+    await store.save([{ role: "user", content: "正常条目" }]);
+    const raw = new TextDecoder().decode(getFileBytes(sessionPath));
+    const parsed = JSON.parse(raw) as { messages: unknown[] };
+    parsed.messages.splice(
+      1,
+      0,
+      { role: "bot", content: "未知角色" },
+      { role: "user" },
+      null,
+      "字符串",
+    );
+    await workspace.fs.writeFile(
+      Uri.file(sessionPath),
+      new TextEncoder().encode(JSON.stringify(parsed)),
+    );
+
+    const loaded = await store.load();
+
+    expect(loaded).toEqual([{ role: "user", content: "正常条目" }]);
   });
 });

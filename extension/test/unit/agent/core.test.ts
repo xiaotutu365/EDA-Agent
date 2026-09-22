@@ -203,6 +203,33 @@ describe("Agent 循环（Task 6：多工具 / 异常 / 超限）", () => {
     expect(toolMsg.content).toContain("错误");
   });
 
+  it("工具抛出非 Error 值（如字符串）同样回填错误结果", async () => {
+    const { client, chatStream } = makeClient();
+    const execute = vi.fn().mockRejectedValue("字符串错误");
+    const tool: AgentTool = {
+      name: "weird",
+      description: "抛字符串",
+      parameters: { type: "object", properties: {} },
+      execute: execute as unknown as AgentTool["execute"],
+    };
+    const registry = new ToolRegistry();
+    registry.register(tool);
+    chatStream
+      .mockImplementationOnce(async () => ({
+        content: "",
+        toolCalls: [{ id: "call_w", name: "weird", args: {} }],
+      }))
+      .mockImplementationOnce(async () => textResponse("继续"));
+    const agent = new Agent({ client, registry, maxToolRounds: 10 });
+
+    const final = await agent.send("触发", onDelta);
+
+    expect(final).toBe("继续");
+    const secondReq = chatStream.mock.calls[1]?.[0] as ChatRequest;
+    const toolMsg = secondReq.messages[2] as Message;
+    expect(toolMsg.content).toContain("字符串错误");
+  });
+
   it("未知工具名同样回填错误结果，不中断循环", async () => {
     const { client, chatStream } = makeClient();
     chatStream

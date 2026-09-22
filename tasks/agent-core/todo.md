@@ -19,11 +19,10 @@
   - Size: S
 
 ## Checkpoint: 基础可用
-- [ ] 测试/lint/构建全绿
-- [ ] F5 激活验证通过
+- [x] 测试/lint/构建全绿
+- [ ] F5 激活验证通过（待人工验证）
 
 ## Phase 2: Agent 核心
-
 - [x] Task 3: 核心类型与 ToolRegistry
   - Acceptance: `AgentTool` / `Message` / `ToolCall` 类型定义；重复注册抛错
   - Verify: `npm test -- toolRegistry`
@@ -53,8 +52,8 @@
   - Size: M
 
 ## Checkpoint: 核心循环可用
-- [ ] 四条循环路径 mock 测试通过
-- [ ] 构建干净，人工 review 后继续
+- [x] 四条循环路径 mock 测试通过
+- [x] 构建干净，人工 review 后继续（已确认，继续 Phase 3）
 
 ## Phase 3: 会话与 MCP
 
@@ -73,8 +72,8 @@
   - Size: S
 
 ## Checkpoint: 能力接入完成
-- [ ] demo MCP tool 进入循环并调用成功
-- [ ] 会话 round-trip 通过
+- [x] demo MCP tool 进入循环并调用成功
+- [x] 会话 round-trip 通过
 
 ## Phase 4: 集成与收尾
 
@@ -85,7 +84,7 @@
   - Dependencies: Task 6, Task 7, Task 8
   - Size: S
 
-- [ ] Task 10: 覆盖率与 lint 收尾
+- [x] Task 10: 覆盖率与 lint 收尾
   - Acceptance: `src/agent`、`src/mcp` 覆盖率 ≥ 85%；eslint/prettier 零告警；脚本命令与 README 注释一致
   - Verify: `npm test -- --coverage && npm run lint`
   - Files: `vitest.config.ts`、`.eslintrc`、`package.json`

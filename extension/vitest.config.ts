@@ -11,5 +11,10 @@ export default defineConfig({
   test: {
     include: ["test/unit/**/*.test.ts", "test/integration/**/*.test.ts"],
     environment: "node",
+    coverage: {
+      provider: "v8",
+      include: ["src/agent/**", "src/mcp/**"],
+      thresholds: { lines: 85, functions: 85, branches: 85, statements: 85 },
+    },
   },
 });
