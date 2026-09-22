@@ -38,7 +38,7 @@
   - Dependencies: Task 3
   - Size: S
 
-- [ ] Task 5: Agent 循环——纯文本 + 单工具
+- [x] Task 5: Agent 循环——纯文本 + 单工具
   - Acceptance: 纯文本流式回调输出；单 tool call 执行并回填后产出最终回复
   - Verify: `npm test -- core`
   - Files: `src/agent/core.ts`、`test/unit/agent/core.test.ts`
