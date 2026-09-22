@@ -58,7 +58,7 @@
 
 ## Phase 3: 会话与 MCP
 
-- [ ] Task 7: MCP Client 与 AgentTool 适配
+- [x] Task 7: MCP Client 与 AgentTool 适配
   - Acceptance: 按 `eda-agent.mcp.servers` 启动子进程；`listTools` 适配为 `AgentTool`；`callTool` 正确执行；连接失败不崩溃且可提示
   - Verify: `npm test -- mcp`
   - Files: `src/mcp/client.ts`、`test/unit/mcp/client.test.ts`、`test/fixtures/demo-mcp-server.mjs`

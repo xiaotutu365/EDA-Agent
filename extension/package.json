@@ -37,6 +37,7 @@
     "vitest": "^3.0.0"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
     "openai": "^7.21.0"
   }
 }
