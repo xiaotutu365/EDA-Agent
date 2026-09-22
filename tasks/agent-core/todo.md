@@ -65,7 +65,7 @@
   - Dependencies: Task 3（可与 Task 5/6 并行）
   - Size: M
 
-- [ ] Task 8: 会话持久化与恢复
+- [x] Task 8: 会话持久化与恢复
   - Acceptance: 会话 JSON 落盘 globalStorage；恢复后上下文连续；apiKey 等敏感信息不入盘
   - Verify: `npm test -- session`
   - Files: `src/agent/sessionStore.ts`、`test/unit/agent/sessionStore.test.ts`
