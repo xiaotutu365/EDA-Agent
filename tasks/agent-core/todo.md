@@ -31,7 +31,7 @@
   - Dependencies: Task 2
   - Size: S
 
-- [ ] Task 4: llmClient 薄封装
+- [x] Task 4: llmClient 薄封装
   - Acceptance: openai SDK 封装为可注入接口，支持流式与 tool calls 参数透传
   - Verify: `npm test -- llmClient`
   - Files: `src/agent/llmClient.ts`、`test/unit/agent/llmClient.test.ts`
