@@ -11,7 +11,7 @@
   - Dependencies: 无
   - Size: M
 
-- [ ] Task 2: 配置模块与 SecretStorage
+- [x] Task 2: 配置模块与 SecretStorage
   - Acceptance: `eda-agent.llm.*` 读取正确；baseUrl 缺失报可操作错误；apiKey 仅从 SecretStorage 读取
   - Verify: `npm test -- config`
   - Files: `src/agent/config.ts`、`test/unit/agent/config.test.ts`（含 VSCode API mock 工具）
